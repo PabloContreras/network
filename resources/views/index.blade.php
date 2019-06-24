@@ -199,7 +199,7 @@
                                 </ul>
                         </div>
                         <!-- Book Room -->
-                        <a href="#" class="book-room-btn btn palatin-btn">Contratar</a>
+                        <a href="{{ route('contratar') }}" class="book-room-btn btn palatin-btn">Contratar</a>
                     </div>
                 </div>
 
