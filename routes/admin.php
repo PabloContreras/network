@@ -10,5 +10,5 @@ Route::get('/home', function () {
     return view('admin.home');
 })->name('home');
 
-Route::get('/home','ProfileController@perfilAdmin');
+Route::get('/home','AdminController@profile');
 
