@@ -17,6 +17,8 @@ class CreateClientesTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('membresia_id')->nullable();
+            $table->string('activo')->default(1);
             $table->rememberToken();
             $table->timestamps();
         });
