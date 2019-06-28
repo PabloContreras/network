@@ -2,9 +2,10 @@
 
 namespace App;
 
+use App\Membresia;
 use App\Notifications\ClienteResetPassword;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class Cliente extends Authenticatable
 {
@@ -47,6 +48,10 @@ class Cliente extends Authenticatable
         return true;
     }
 
+    public function membresia()
+    {
+        return $this->hasOne(Membresia::class);
+    }
     public function admin()
     {
         return $this->belongsTo(Admin::class);
