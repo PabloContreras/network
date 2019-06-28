@@ -52,4 +52,8 @@ class Cliente extends Authenticatable
     {
         return $this->hasOne(Membresia::class);
     }
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class);
+    }
 }

@@ -45,4 +45,19 @@ class Admin extends Authenticatable
     public function isClient(){
         return false;
     }
+
+
+    public function eventos()
+    {
+        return $this->hasMany(Evento::class);
+    }
+
+    public function articulos()
+    {
+        return $this->hasMany(Articulo::class);
+    }
+    public function clientes()
+    {
+        return $this->hasMany(Cliente::class);
+    }
 }
