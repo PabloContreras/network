@@ -16,7 +16,7 @@ class CreateChatsTable extends Migration
         Schema::create('chats', function (Blueprint $table) {
             $table->integer('chat_id');
             $table->integer('usuario1_id');
-            $table->integer('usuario2_id')
+            $table->integer('usuario2_id');
             $table->timestamps();
         });
     }
@@ -32,3 +32,4 @@ class CreateChatsTable extends Migration
     }
 
     
+}
