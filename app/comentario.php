@@ -7,4 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class comentario extends Model
 {
     //
+
+    public function publicacion()
+    {
+        return $this->belongsto('publicacion');
+    }
 }

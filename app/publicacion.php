@@ -6,8 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class publicacion extends Model
 {
+    
+    public function comentarios()
+    {
+        return $this->hasmany('comentario');
+    }
+
     public function likes()
     {
-        return $this->hasMany(like::class);
+        return $this->hasmany('like');
     }
 }

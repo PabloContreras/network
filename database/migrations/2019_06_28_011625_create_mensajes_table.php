@@ -32,8 +32,5 @@ class CreateMensajesTable extends Migration
     }
 
 
-    public function chat()
-    {
-        return $this->belongsto('mensaje');
-    }
+    
 }

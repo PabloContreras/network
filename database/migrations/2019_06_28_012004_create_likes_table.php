@@ -31,8 +31,5 @@ class CreateLikesTable extends Migration
         Schema::dropIfExists('likes');
     }
 
-    public function publicacion()
-    {
-        return $this->belongsto('publicacion');
-    }
+    
 }

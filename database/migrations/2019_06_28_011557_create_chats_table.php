@@ -31,8 +31,4 @@ class CreateChatsTable extends Migration
         Schema::dropIfExists('chats');
     }
 
-    public function mensajes()
-    {
-        return $this->hasmany('mensaje');
-    }
-}
+    

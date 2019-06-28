@@ -33,10 +33,7 @@ class CreateComentariosTable extends Migration
 
     }
 
-    public function publicacion()
-    {
-        return $this->belongsto('publicacion');
-    }
+    
 
     
 }
