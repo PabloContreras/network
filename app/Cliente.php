@@ -46,4 +46,9 @@ class Cliente extends Authenticatable
     {
         return true;
     }
+
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class);
+    }
 }
