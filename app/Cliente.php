@@ -17,7 +17,7 @@ class Cliente extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'rfc','nombre','apellido','email','telefono','direccion','password', 'membresia_id'
     ];
 
     /**
@@ -46,14 +46,5 @@ class Cliente extends Authenticatable
     public function isClient()
     {
         return true;
-    }
-
-    public function membresia()
-    {
-        return $this->hasOne(Membresia::class);
-    }
-    public function admin()
-    {
-        return $this->belongsTo(Admin::class);
     }
 }

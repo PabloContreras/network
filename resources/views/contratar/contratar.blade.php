@@ -144,23 +144,10 @@ $carbon = new Carbon\Carbon();
 				<div class="form-row">
 					<div class="form-group col-sm-12 col-md-3">
 						<label for="f-min">Meses:</label><br>
-						<select name="meses" id="" class="nice-select form-control" style="width: 100%">
+						<select onchange="calculaPago()" name="meses" id="meses" class="nice-select form-control" style="width: 100%" required="true">
 							<option value="1">1</option>
-							<option value="2">2</option>
 							<option value="3">3</option>
 						</select>
-					</div>
-					<div class="form-group col-sm-12 col-md-3">
-						<label for="inimem">Del:</label>
-						<input type="date" min="{{ $carbon->now()->format('Y-m-d') }}" class="form-control" name="inimem" required="true" value="{{ $carbon->now()->format('Y-m-d') }}">
-					</div>
-					<div class="form-group col-sm-12 col-md-3">
-						<label for="f-max">Al:</label>
-						<input type="date" min="{{ $carbon->now()->format('Y-m-d') }}" max="{{ $carbon->now()->addMonth(1)->format('Y-m-d') }}" class="form-control" name="f-max" required="true" onfocus="getMinDate()">
-					</div>
-					<div class="form-group col-sm-12 col-md-3">
-						<label for="f-max">Hora:</label>
-						<input type="time" min="{{ $carbon->now()->format('Y-m-d') }}" max="{{ $carbon->now()->addMonth(1)->format('Y-m-d') }}" class="form-control" name="hora" required="true" onfocus="getMinDate()">
 					</div>
 				</div>
 			</fieldset>
@@ -186,6 +173,19 @@ $carbon = new Carbon\Carbon();
 
 @section('scripts')
 <script>
+
+	function calculaPago() {
+		var tm = $("#tipom").val();
+		var me = $('#meses').val();
+		var aux;
+		if(tm == 1){
+			aux = me*4500;
+		}else if(tm == 2){
+			aux = me*5100;
+		}
+		document.getElementById('cantidad').innerHTML = aux;
+	}
+
 	function seleccionar(source) {
 		var mem = source.getAttribute('id');
 		if(mem == 'estandard'){
