@@ -1,8 +1,9 @@
-var publicKey = $('#api-public').val();
 
+var publicKey = $('#api-public').attr('value');
 var tokenParams;
 
 function procesarPago() {
+
 	Conekta.setPublicKey(publicKey);
 	tokenParams = {
 		"card":{

@@ -12,7 +12,10 @@ class PagosController extends Controller
 	private $apiPrivada;
 	private $apiVersion;
 	private $lang;
-	private $currency:
+	private $currency;
+
+	private $monto;
+	private $tokenCard;
 
 	function __construct()
 	{
@@ -32,8 +35,6 @@ class PagosController extends Controller
 	{
 		$fecha_init = Carbon::now()->format('d/m/y');
 		$fecha_final = Carbon::now()->addMonths($r->meses)->format('d/m/y');
-
-
 		$membresia = new Membresia([
 			'fecha_inicio' => $fecha_init,
 			'fecha_fin' => $fecha_final,
@@ -60,6 +61,9 @@ class PagosController extends Controller
 		}else if($request->tipom == 2){
 			$monto = 5100*$request->meses;
 		}
+
+		$this->monto = $monto;
+
 		$titulo = "Datos de pago";
 		return view('contratar.pagar',compact('request','titulo','monto','fecha_init','fecha_final','membresia'));
 	}
@@ -68,5 +72,43 @@ class PagosController extends Controller
 	{
 		return $r->all();
 
+	}
+
+	public function generarOrden(Request $r)
+	{
+		Conekta::setApiKey($this->apiPrivada);
+		Conekta::setApiVersion($this->apiVersion);
+		Conekta::setLocale($this->lang);
+		$orden = Order::create(array(
+			'currency' => $this->currency,
+			'customer_info' => array(
+				'name' => $r->nombre,
+				'email' => $r->correo,
+				'phone' => $r->telefono
+			),
+			'shipping_contact' => array(
+				'address' => array(
+					'street1' => $r->direccion,
+					'postal_code' => $r->codigo_postal,
+					'country' => 'MX'
+				)
+			),
+			'line_items' => array(
+				array(
+					'name' => $r->nombre_sala,
+					'unit_price' => $r->monto,
+					'quantity' => 1
+				)
+			),
+			'charges' => array(
+				array(
+					'payment_method' => array(
+						'type' => 'card',
+						'token_id' => $r->token
+					)
+				)
+			)
+		));
+		return $orden;
 	}
 }

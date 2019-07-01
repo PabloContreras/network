@@ -145,6 +145,7 @@ $carbon = new Carbon\Carbon();
 					<div class="form-group col-sm-12 col-md-3">
 						<label for="f-min">Meses:</label><br>
 						<select onchange="calculaPago()" name="meses" id="meses" class="nice-select form-control" style="width: 100%" required="true">
+							<option value="-1" disabled="true" selected="true">Seleccione una opcion</option>
 							<option value="1">1</option>
 							<option value="3">3</option>
 						</select>
@@ -173,28 +174,36 @@ $carbon = new Carbon\Carbon();
 
 @section('scripts')
 <script>
-
+	var planSelected = false;;
 	function calculaPago() {
 		var tm = $("#tipom").val();
 		var me = $('#meses').val();
 		var aux;
-		if(tm == 1){
-			aux = me*4500;
-		}else if(tm == 2){
-			aux = me*5100;
+		if(this.planSelected){
+			if(tm == 1){
+				aux = me*4500;
+				document.getElementById('cantidad').innerHTML = aux;
+			}else if(tm == 2){
+				aux = me*5100;
+				document.getElementById('cantidad').innerHTML = aux;
+			}
+		}else{
+			document.getElementById('cantidad').innerHTML = 'Seleccione una membresía';
 		}
-		document.getElementById('cantidad').innerHTML = aux;
+
 	}
 
 	function seleccionar(source) {
 		var mem = source.getAttribute('id');
 		if(mem == 'estandard'){
+			planSelected = true;
 			$('#estandard').addClass('bg-selected');
 			$('#p-estandard').addClass('bg-selected');
 			$('#gold').removeClass('bg-selected');
 			$('#p-gold').removeClass('bg-selected');
 			$('#tipom').val('1');
 		}else if(mem == 'gold'){
+			planSelected = true;
 			$('#gold').addClass('bg-selected');
 			$('#p-gold').addClass('bg-selected');
 			$('#estandard').removeClass('bg-selected');
