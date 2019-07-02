@@ -18,7 +18,7 @@ function procesarPago() {
 }
 
 function conektaSuccessResponseHandler(token) {
-	$('#token-conekta').val(token.id);
+	$('#token_conekta').val(token.id);
 	$('#form-pago').submit();
 }
 

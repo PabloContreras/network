@@ -134,6 +134,10 @@ $carbon = new Carbon\Carbon();
 						<label for="direccion">Dirección:</label>
 						<input type="text" class="form-control" name="direccion" placeholder="Dirección" required="true">
 					</div>
+					<div class="form-group col-sm-12 col-md-3">
+						<label for="cp">Codigo postal:</label>
+						<input type="text" class="form-control" name="cp" placeholder="Codigo postal" required="true">
+					</div>
 					{{-- <button type="button" class="btn btn-primary">Siguiente</button> --}}
 				</div>
 			</fieldset>

@@ -20,6 +20,7 @@ class CreateClientesTable extends Migration
             $table->string('email')->unique();
             $table->string('telefono')->unique();
             $table->string('direccion');
+            $table->string('codpos');
             $table->string('password');
             $table->integer('membresia_id')->default(0);
             $table->string('activo')->default(1);

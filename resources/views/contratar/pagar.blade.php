@@ -96,13 +96,14 @@ use Carbon\Carbon;
 						<input type="text" class="form-control" name="anio" placeholder="AA" required="true">
 					</div>
 					<div class="form-group col-sm-12 col-md-3">
-						<label for="cvc">CVC:</label>
-						<input type="text" class="form-control" id="cvc" placeholder="CVC" required="true">
+						<label for="cvc">CVV:</label>
+						<input type="text" class="form-control" id="cvc" placeholder="CVV" required="true">
 					</div>
-					<input type="text" id="token-conekta" name="token-conekta" hidden="true">
-					{{-- <button type="button" class="btn btn-primary">Siguiente</button> --}}
+					<input type="text" id="token_conekta" name="token_conekta" hidden="true">
 					<input type="text" name="membresia_id" hidden="true" value="{{ $membresia->id }}">
+					<input type="text" name="user_id" hidden="true" value="{{ $cliente->id }}">
 					<input type="text" name="montoAPagar" hidden="true" value="{{ $monto }}">
+					<input type="text" name="tipo_membresia" hidden="true" value="{{ $membresia->tipo }}">
 				</div>
 			</fieldset>
 			<div class="form-row justify-content-center">

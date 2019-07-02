@@ -15,9 +15,10 @@ class CreatePagosTable extends Migration
     {
         Schema::create('pagos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->float('cantidad',5,2);
+            $table->float('cantidad',7,2);
             $table->timestamps();
-            $table->integer('factura_id');
+            $table->string('payment_id');
+            $table->integer('factura_id')->default(0);
         });
     }
 
