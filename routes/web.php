@@ -25,9 +25,7 @@ Route::get('/about', 'Controller@aboutUs');
 Route::get('/servicios', 'Controller@services');
 Route::get('/contacto', 'Controller@contact');
 
-Route::get('/contratar',['as'=>'contratar','uses'=>'PagosController@getContratarForm']);
-Route::post('/datos-pago',['as'=>'procederpago','uses'=>'PagosController@compruebaUser']);
-Route::post('/pagar',['as'=>'intentarPago','uses'=>'PagosController@intentarPago']);
+require __DIR__ . '/pagos_facturas.php';
 
 Route::get('/registro/agregar', 'RegisterController@create');
 Route::post('/registro', 'RegisterController@store');

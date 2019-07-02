@@ -5,7 +5,7 @@ use Carbon\Carbon;
 @extends('layouts.main')
 
 @section('links')
-	<meta name="api-public" id="api-public" value='{{ env('CONEKTA_APIKEYPU') }}'>
+<meta name="api-public" id="api-public" value='{{ env('CONEKTA_APIKEYPU') }}'>
 @endsection
 
 @section('content')
@@ -98,6 +98,9 @@ use Carbon\Carbon;
 					<div class="form-group col-sm-12 col-md-3">
 						<label for="cvc">CVV:</label>
 						<input type="text" class="form-control" id="cvc" placeholder="CVV" required="true">
+					</div>
+					<div class="form-group col-sm-12 col-md-3">
+						<input type="checkbox" class="form-control"> Acepto <a href="{{ route('terminos') }}" target="_blank">Términos y Condiciones</a>
 					</div>
 					<input type="text" id="token_conekta" name="token_conekta" hidden="true">
 					<input type="text" name="membresia_id" hidden="true" value="{{ $membresia->id }}">

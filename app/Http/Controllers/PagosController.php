@@ -80,15 +80,19 @@ class PagosController extends Controller
 	{
 		$orden = $this->generarOrden($r,$r->user_id,$r->membresia_id);
 
-		if ($orden->payment_status == 'paid') {
-			$pago = new Pago([
-				'cantidad' => $orden->amount,
-				'payment_id' => $orden->id
-			]);
-			$pago->save();
-			$membresia = Membresia::find($r->membresia_id);
-			$membresia->pago_id = $pago->id;
-			return "Pago procesado";
+		try{
+			if ($orden->payment_status == 'paid') {
+				$pago = new Pago([
+					'cantidad' => $orden->amount/100,
+					'payment_id' => $orden->id
+				]);
+				$pago->save();
+				$membresia = Membresia::find($r->membresia_id);
+				$membresia->pago_id = $pago->id;
+				return $orden;
+			}
+		}catch(Exception $e){
+			return "Error";
 		}
 	}
 
@@ -131,5 +135,11 @@ class PagosController extends Controller
 		));
 
 		return $orden;
+	}
+
+	public function terminos()
+	{
+		$titulo = 'Términos y Condiciones';
+		return view('contratar.terminos',compact('titulo'));
 	}
 }
