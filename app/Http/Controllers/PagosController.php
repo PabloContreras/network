@@ -43,8 +43,8 @@ class PagosController extends Controller
 		$fecha_final = Carbon::now()->addMonths($r->meses)->format('d/m/y');
 
 		$membresia = new Membresia([
-			'fecha_inicio' => $fecha_init,
-			'fecha_fin' => $fecha_final,
+			'fecha_inicio' => Carbon::now(),
+			'fecha_fin' => Carbon::now()->addMonths($r->meses),
 			'tipo' => $r->tipom,
 			'pago_id' => 0
 		]);
@@ -67,9 +67,9 @@ class PagosController extends Controller
 		$monto;
 
 		if ($request->tipom == 1) {
-			$monto = 4500*$request->meses;
+			$monto = 4500*$request->meses+(4500*$request->meses*0.16);
 		}else if($request->tipom == 2){
-			$monto = 5100*$request->meses;
+			$monto = 5100*$request->meses+(5100*$request->meses*0.16);
 		}
 
 		$titulo = "Datos de pago";
@@ -79,17 +79,18 @@ class PagosController extends Controller
 	public function intentarPago(Request $r)
 	{
 		$orden = $this->generarOrden($r,$r->user_id,$r->membresia_id);
-
 		try{
 			if ($orden->payment_status == 'paid') {
 				$pago = new Pago([
 					'cantidad' => $orden->amount/100,
-					'payment_id' => $orden->id
+					'payment_id' => $orden->id,
+					'payment_method' => $orden->charges[0]->payment_method->type
 				]);
 				$pago->save();
 				$membresia = Membresia::find($r->membresia_id);
 				$membresia->pago_id = $pago->id;
-				return $orden;
+				$membresia->save();
+				return view('contratar.pagado',compact('orden','membresia'));
 			}
 		}catch(Exception $e){
 			return "Error";
@@ -100,6 +101,7 @@ class PagosController extends Controller
 	{
 		$cliente = Cliente::find($id_usuario);
 		$membresia = Membresia::find($id_membresia);
+
 
 		Conekta::setApiKey($this->apiPrivada);
 		Conekta::setLocale($this->lang);
@@ -120,7 +122,7 @@ class PagosController extends Controller
 			'line_items' => array(
 				array(
 					'name' => 'asdsad',
-					'unit_price' => $r->montoAPagar*100,
+					'unit_price' => 2000*100/*$r->montoAPagar*100*/,
 					'quantity' => 1
 				)
 			),

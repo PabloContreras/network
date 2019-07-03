@@ -108,7 +108,7 @@ $carbon = new Carbon\Carbon();
 				<div class="form-row">
 					<div class="form-group col-sm-12 col-md-3">
 						<label for="rfc">RFC:</label>
-						<input type="text" class="form-control" name="rfc" placeholder="RFC" required="true">
+						<input type="text" class="form-control" name="rfc" placeholder="RFC" required="true" pattern="([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])">
 					</div>
 					<div class="form-group col-sm-12 col-md-3">
 						<label for="nombres">Nombres:</label>
@@ -164,6 +164,9 @@ $carbon = new Carbon\Carbon();
 					<div class="col-12 col-md-3">
 						<h2 id="cantidad"></h2>
 					</div>
+					<div class="col-12 col-md-3">
+						<h4 class="text-muted">IVA incluido</h4>
+					</div>
 				</div>
 			</fieldset>
 			<div class="form-row justify-content-center">
@@ -185,10 +188,10 @@ $carbon = new Carbon\Carbon();
 		var aux;
 		if(this.planSelected){
 			if(tm == 1){
-				aux = me*4500;
+				aux = me*4500+(me*4500*0.16);
 				document.getElementById('cantidad').innerHTML = aux;
 			}else if(tm == 2){
-				aux = me*5100;
+				aux = me*5100+(me*5100*0.16);
 				document.getElementById('cantidad').innerHTML = aux;
 			}
 		}else{

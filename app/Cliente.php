@@ -48,4 +48,9 @@ class Cliente extends Authenticatable
     {
         return true;
     }
+
+    public function membresia()
+    {
+        return $this->belongsTo(Membresia::class);
+    }
 }

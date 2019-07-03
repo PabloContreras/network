@@ -99,9 +99,6 @@ use Carbon\Carbon;
 						<label for="cvc">CVV:</label>
 						<input type="text" class="form-control" id="cvc" placeholder="CVV" required="true">
 					</div>
-					<div class="form-group col-sm-12 col-md-3">
-						<input type="checkbox" class="form-control"> Acepto <a href="{{ route('terminos') }}" target="_blank">Términos y Condiciones</a>
-					</div>
 					<input type="text" id="token_conekta" name="token_conekta" hidden="true">
 					<input type="text" name="membresia_id" hidden="true" value="{{ $membresia->id }}">
 					<input type="text" name="user_id" hidden="true" value="{{ $cliente->id }}">

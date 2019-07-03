@@ -15,6 +15,7 @@ class CreateFacturasTable extends Migration
     {
         Schema::create('facturas', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('facturama_id');
             $table->boolean('generada');
             $table->timestamps();
         });

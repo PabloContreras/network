@@ -18,6 +18,7 @@ class CreatePagosTable extends Migration
             $table->float('cantidad',7,2);
             $table->timestamps();
             $table->string('payment_id');
+            $table->string('payment_method');
             $table->integer('factura_id')->default(0);
         });
     }
