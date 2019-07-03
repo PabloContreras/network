@@ -21,7 +21,7 @@ class FacturasController extends Controller
 
 	public function getFormFactura()
 	{
-		$clienteatalogoUsos = $this->getCatalogoUsos();
+		$catalogoUsos = $this->getCatalogoUsos();
 		return view('facturas.generar-factura', compact(
 			'catalogoUsos'
 		));

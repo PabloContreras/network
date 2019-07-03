@@ -122,7 +122,7 @@ class PagosController extends Controller
 			'line_items' => array(
 				array(
 					'name' => 'asdsad',
-					'unit_price' => 2000*100/*$r->montoAPagar*100*/,
+					'unit_price' => $r->montoAPagar*100,
 					'quantity' => 1
 				)
 			),

@@ -42,7 +42,7 @@ $carbon = new Carbon\Carbon();
 		<h2>Contratar</h2>
 	</div>
 </section>
-
+@include('facturas.terminos')
 <section class="contact-form-area mb-100" id="contratar">
 	<div class="container">
 		<div class="section-heading">
@@ -145,7 +145,7 @@ $carbon = new Carbon\Carbon();
 				<div class="form-row">
 					<h4 class="text-muted">Meses a contratar</h4>
 				</div>
-				<div class="form-row">
+				<div class="form-row align-items-center">
 					<div class="form-group col-sm-12 col-md-3">
 						<label for="f-min">Meses:</label><br>
 						<select onchange="calculaPago()" name="meses" id="meses" class="nice-select form-control" style="width: 100%" required="true">
@@ -153,6 +153,9 @@ $carbon = new Carbon\Carbon();
 							<option value="1">1</option>
 							<option value="3">3</option>
 						</select>
+					</div>
+					<div class="form-group col-sm-12 col-md-3">
+						<input type="checkbox" class="" id="terminos" style="height: auto; width: auto"> <a href="#" data-toggle="modal" data-target="#exampleModal">Acepto terminos y condiciones</a>
 					</div>
 				</div>
 			</fieldset>
@@ -167,6 +170,7 @@ $carbon = new Carbon\Carbon();
 					<div class="col-12 col-md-3">
 						<h4 class="text-muted">IVA incluido</h4>
 					</div>
+
 				</div>
 			</fieldset>
 			<div class="form-row justify-content-center">
