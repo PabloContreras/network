@@ -30,10 +30,4 @@ class CreateChatsTable extends Migration
     {
         Schema::dropIfExists('chats');
     }
-<<<<<<< HEAD
-
-    
 }
-=======
-}
->>>>>>> Alan2
