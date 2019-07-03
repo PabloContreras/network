@@ -1,4 +1,4 @@
-<?php
+  <?php
 
 /*
 |--------------------------------------------------------------------------
@@ -11,14 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-	$titulo = 'Bienvenido';
-    return view('index', compact($titulo));
-});
-
-//Auth::routes();
-
-/*Route::get('/home', 'HomeController@index')->name('home');*/
 Route::get('/', 'Controller@index');
 Route::get('/inicio', 'Controller@index');
 Route::get('/about', 'Controller@aboutUs');
