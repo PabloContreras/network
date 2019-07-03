@@ -8,13 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pago extends Model
 {
-    public function membresia()
-    {
-    	return $this->belongsTo(Membresia::class);
-    }
+	protected $fillable = ['cantidad','payment_id','payment_method'];
 
-    public function factura()
-    {
-    	return $this->hasOne(Factura::class);
-    }
+	public function factura()
+	{
+		$this->blongsTo(Factura::class);
+	}
+
+	public function membresia()
+	{
+		return $this->hasOne(Membresia::class);
+	}
 }

@@ -14,11 +14,11 @@ class CreateMembresiasTable extends Migration
     public function up()
     {
         Schema::create('membresias', function (Blueprint $table) {
-            $table->bigIncrements('membresia_id');
+            $table->bigIncrements('id');
             $table->date('fecha_inicio');
             $table->date('fecha_fin');
             $table->integer('tipo');
-            $table->integer('pago_id');
+            $table->integer('pago_id')->nullable();
             $table->timestamps();
         });
     }

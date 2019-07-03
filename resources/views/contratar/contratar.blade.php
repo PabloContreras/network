@@ -42,7 +42,7 @@ $carbon = new Carbon\Carbon();
 		<h2>Contratar</h2>
 	</div>
 </section>
-
+@include('facturas.terminos')
 <section class="contact-form-area mb-100" id="contratar">
 	<div class="container">
 		<div class="section-heading">
@@ -108,7 +108,7 @@ $carbon = new Carbon\Carbon();
 				<div class="form-row">
 					<div class="form-group col-sm-12 col-md-3">
 						<label for="rfc">RFC:</label>
-						<input type="text" class="form-control" name="rfc" placeholder="RFC" required="true">
+						<input type="text" class="form-control" name="rfc" placeholder="RFC" required="true" pattern="([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])">
 					</div>
 					<div class="form-group col-sm-12 col-md-3">
 						<label for="nombres">Nombres:</label>
@@ -134,6 +134,10 @@ $carbon = new Carbon\Carbon();
 						<label for="direccion">Dirección:</label>
 						<input type="text" class="form-control" name="direccion" placeholder="Dirección" required="true">
 					</div>
+					<div class="form-group col-sm-12 col-md-3">
+						<label for="cp">Codigo postal:</label>
+						<input type="text" class="form-control" name="cp" placeholder="Codigo postal" required="true">
+					</div>
 					{{-- <button type="button" class="btn btn-primary">Siguiente</button> --}}
 				</div>
 			</fieldset>
@@ -141,26 +145,17 @@ $carbon = new Carbon\Carbon();
 				<div class="form-row">
 					<h4 class="text-muted">Meses a contratar</h4>
 				</div>
-				<div class="form-row">
+				<div class="form-row align-items-center">
 					<div class="form-group col-sm-12 col-md-3">
 						<label for="f-min">Meses:</label><br>
-						<select name="meses" id="" class="nice-select form-control" style="width: 100%">
+						<select onchange="calculaPago()" name="meses" id="meses" class="nice-select form-control" style="width: 100%" required="true">
+							<option value="-1" disabled="true" selected="true">Seleccione una opcion</option>
 							<option value="1">1</option>
-							<option value="2">2</option>
 							<option value="3">3</option>
 						</select>
 					</div>
 					<div class="form-group col-sm-12 col-md-3">
-						<label for="inimem">Del:</label>
-						<input type="date" min="{{ $carbon->now()->format('Y-m-d') }}" class="form-control" name="inimem" required="true" value="{{ $carbon->now()->format('Y-m-d') }}">
-					</div>
-					<div class="form-group col-sm-12 col-md-3">
-						<label for="f-max">Al:</label>
-						<input type="date" min="{{ $carbon->now()->format('Y-m-d') }}" max="{{ $carbon->now()->addMonth(1)->format('Y-m-d') }}" class="form-control" name="f-max" required="true" onfocus="getMinDate()">
-					</div>
-					<div class="form-group col-sm-12 col-md-3">
-						<label for="f-max">Hora:</label>
-						<input type="time" min="{{ $carbon->now()->format('Y-m-d') }}" max="{{ $carbon->now()->addMonth(1)->format('Y-m-d') }}" class="form-control" name="hora" required="true" onfocus="getMinDate()">
+						<input type="checkbox" class="" id="terminos" style="height: auto; width: auto"> <a href="#" data-toggle="modal" data-target="#exampleModal">Acepto terminos y condiciones</a>
 					</div>
 				</div>
 			</fieldset>
@@ -172,6 +167,10 @@ $carbon = new Carbon\Carbon();
 					<div class="col-12 col-md-3">
 						<h2 id="cantidad"></h2>
 					</div>
+					<div class="col-12 col-md-3">
+						<h4 class="text-muted">IVA incluido</h4>
+					</div>
+
 				</div>
 			</fieldset>
 			<div class="form-row justify-content-center">
@@ -186,15 +185,36 @@ $carbon = new Carbon\Carbon();
 
 @section('scripts')
 <script>
+	var planSelected = false;;
+	function calculaPago() {
+		var tm = $("#tipom").val();
+		var me = $('#meses').val();
+		var aux;
+		if(this.planSelected){
+			if(tm == 1){
+				aux = me*4500+(me*4500*0.16);
+				document.getElementById('cantidad').innerHTML = aux;
+			}else if(tm == 2){
+				aux = me*5100+(me*5100*0.16);
+				document.getElementById('cantidad').innerHTML = aux;
+			}
+		}else{
+			document.getElementById('cantidad').innerHTML = 'Seleccione una membresía';
+		}
+
+	}
+
 	function seleccionar(source) {
 		var mem = source.getAttribute('id');
 		if(mem == 'estandard'){
+			planSelected = true;
 			$('#estandard').addClass('bg-selected');
 			$('#p-estandard').addClass('bg-selected');
 			$('#gold').removeClass('bg-selected');
 			$('#p-gold').removeClass('bg-selected');
 			$('#tipom').val('1');
 		}else if(mem == 'gold'){
+			planSelected = true;
 			$('#gold').addClass('bg-selected');
 			$('#p-gold').addClass('bg-selected');
 			$('#estandard').removeClass('bg-selected');

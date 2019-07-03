@@ -1,4 +1,12 @@
+@php
+use Carbon\Carbon;
+@endphp
+
 @extends('layouts.main')
+
+@section('links')
+<meta name="api-public" id="api-public" value='{{ env('CONEKTA_APIKEYPU') }}'>
+@endsection
 
 @section('content')
 
@@ -32,7 +40,7 @@
 				<h5>Meses a contratar:</h5>
 			</div>
 			<div class="col-6">
-				<h5>{{ $request->meses}}</h5>
+				<h5>{{  $request->meses }}</h5>
 			</div>
 		</div>
 		<div class="row">
@@ -40,7 +48,15 @@
 				<h5>Inicio de la membresía:</h5>
 			</div>
 			<div class="col-6">
-				<h5>{{ $request->inimem }}</h5>
+				<h5>{{ $fecha_init }}</h5>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-6">
+				<h5>Fin de la membresía:</h5>
+			</div>
+			<div class="col-6">
+				<h5>{{ $fecha_final }}</h5>
 			</div>
 		</div>
 		<div class="row">
@@ -48,53 +64,59 @@
 				<h5>Monto a pagar:</h5>
 			</div>
 			<div class="col-6">
-				<h5>${{ $request->tipom == 2 ? $request->meses*5100 : $request->meses*4500 }}</h5>
+				<h5>${{ $monto }}</h5>
 			</div>
 		</div>
-		<form action="{{ route('procederpago') }}" method="POST" >
+		<form id="form-pago" action="{{ route('intentarPago') }}" method="POST">
 			@csrf
 			<fieldset id="info-pago">
 				<div class="form-row">
-					<h4 class="text-muted">Datos personales</h4>
+					<h4 class="text-muted">Informacion de pago</h4>
+				</div>
+				<div class="form-row">
+					<div class="col-auto my-1">
+						<img src="{{ asset('img/cards.png') }}" class="img-fluid" width="150px" alt="">
+					</div>
 				</div>
 				<div class="form-row">
 					<div class="form-group col-sm-12 col-md-3">
-						<label for="rfc">RFC:</label>
-						<input type="text" class="form-control" name="rfc" placeholder="RFC" required="true">
+						<label for="nombre">Nombre del tarjetahabiente:</label>
+						<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" required="true">
 					</div>
 					<div class="form-group col-sm-12 col-md-3">
-						<label for="nombres">Nombres:</label>
-						<input type="text" class="form-control" name="nombres" placeholder="Nombres" required="true">
+						<label for="ntarjeta">Numero de tarjeta:</label>
+						<input type="text" class="form-control" id="ntarjeta" placeholder="Numero de tarjeta" required="true">
 					</div>
 					<div class="form-group col-sm-12 col-md-3">
-						<label for="apellidop">Apellido paterno:</label>
-						<input type="text" class="form-control" name="apellidop" placeholder="Apellido paterno" required="true">
+						<label for="mes">Més de vencimiento:</label>
+						<input type="text" class="form-control" name="mes" placeholder="MM" required="true">
 					</div>
 					<div class="form-group col-sm-12 col-md-3">
-						<label for="apellidom">Apellido materno:</label>
-						<input type="text" class="form-control" name="apellidom" placeholder="Apellido materno" required="true">
+						<label for="anio">Año de vencimiento:</label>
+						<input type="text" class="form-control" name="anio" placeholder="AA" required="true">
 					</div>
 					<div class="form-group col-sm-12 col-md-3">
-						<label for="correo">Correo:</label>
-						<input type="email" class="form-control" name="correo" placeholder="Correo" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required="true">
+						<label for="cvc">CVV:</label>
+						<input type="text" class="form-control" id="cvc" placeholder="CVV" required="true">
 					</div>
-					<div class="form-group col-sm-12 col-md-3">
-						<label for="telefono">Teléfono:</label>
-						<input type="tel" class="form-control" pattern="[0-9]{10}" name="telefono" placeholder="Teléfono (10 digitos)" required="true">
-					</div>
-					<div class="form-group col-sm-12 col-md-3">
-						<label for="direccion">Dirección:</label>
-						<input type="text" class="form-control" name="direccion" placeholder="Dirección" required="true">
-					</div>
-					{{-- <button type="button" class="btn btn-primary">Siguiente</button> --}}
+					<input type="text" id="token_conekta" name="token_conekta" hidden="true">
+					<input type="text" name="membresia_id" hidden="true" value="{{ $membresia->id }}">
+					<input type="text" name="user_id" hidden="true" value="{{ $cliente->id }}">
+					<input type="text" name="montoAPagar" hidden="true" value="{{ $monto }}">
+					<input type="text" name="tipo_membresia" hidden="true" value="{{ $membresia->tipo }}">
 				</div>
 			</fieldset>
 			<div class="form-row justify-content-center">
 				<div class="form-group col-auto">
-					<button type="submmit" class="btn btn-success">Pagar</button>
+					<button type="button" class="btn btn-success" onclick="procesarPago()">Pagar</button>
 				</div>
 			</div>
 		</form>
 	</div>
 </section>
+@endsection
+
+@section('scripts');
+<script type="text/javascript" src="https://cdn.conekta.io/js/latest/conekta.js"></script>
+<script src="{{ asset('js/token-coneckta.js') }}"></script>
 @endsection
