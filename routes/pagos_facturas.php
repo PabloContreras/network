@@ -33,3 +33,8 @@ Route::get('/busca-datos/{rfc}',array(
 	'as' => 'cargarcsd',
 	'uses' => 'FacturasController@cargarCSD'
 ));*/
+
+Route::get('/getfac',array(
+	'as' => 'loadFactura',
+	'uses' => 'PDFController@generarPDF'
+));

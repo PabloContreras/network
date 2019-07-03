@@ -6,6 +6,7 @@ use App\Cliente;
 use App\Factura;
 use App\Membresia;
 use App\Pago;
+use BaconQrCode\Encoder\QrCode;
 use Facturama\Client;
 use Illuminate\Http\Request;
 
@@ -20,7 +21,7 @@ class FacturasController extends Controller
 
 	public function getFormFactura()
 	{
-		$catalogoUsos = $this->getCatalogoUsos();
+		$clienteatalogoUsos = $this->getCatalogoUsos();
 		return view('facturas.generar-factura', compact(
 			'catalogoUsos'
 		));
@@ -28,7 +29,13 @@ class FacturasController extends Controller
 
 	public function getFactura(Request $r)
 	{
-		$this->getCFDI($r);
+
+		$result = $this->getCFDI($r);
+		$linkQr = "https://verificacfdi.facturaelectronica.sat.gob.mx/default.aspx?id=".$result->Complement->TaxStamp->Uuid."&re=". $result->Issuer->Rfc ."&rr=".$result->Receiver->Rfc ."&tt=0000000000.000000&fe=ED4yeg==";
+		$qr = \QrCode::size(250)
+		->generate($linkQr);
+
+		return view('facturas.factura',compact('result','qr'));
 	}
 
 	public function buscaDatos($rfc)
@@ -59,18 +66,16 @@ class FacturasController extends Controller
 	{
 		/*return $this->facturama->get('catalogs/FiscalRegimens');*/
 		$c = Cliente::find($r->user_id);
-		$desc;
-		if ($c->membresia->tipo == 1) {
-			$desc = 'Estandard';
-		}else{
-			$desc = 'Gold';
-		}
+		$desc = $this->getTipoMembresia($c);
+		$metodo = $this->getMetodoDePago($c);
+
+		$subtotal = $c->membresia->pago->cantidad-$c->membresia->pago->cantidad*0.16;
 
 		$params = array(
 			'NameId' => '1',
 			"ExpeditionPlace" => "50160",
 			'CfdiType' => 'I',
-			'PaymentForm' => '28', /* 28 debito 03 credito*/
+			'PaymentForm' => $metodo, /* 28 debito 03 credito*/
 			'PaymentMethod' => 'PUE',
 			'Currency' => 'MXN',
 			'Folio' => '1',
@@ -100,7 +105,7 @@ class FacturasController extends Controller
 				array(
 					'Name' => 'IVA',
 					'Rate' => '16.0',
-					'Total' => $c->membresia->pago->cantidad*0.16,
+					'Total' => '0',
 					'IsRetention' => 'false'
 				)
 			)
@@ -112,7 +117,11 @@ class FacturasController extends Controller
 				'generada' => true
 			]);
 			$f->save();
-			$c->membresia->pago->facutra_id = $f->id;
+			$m = $c->membresia;
+			$p = $m->pago;
+			$p->factura_id = $f->id;
+			$p->save();
+			return $result;
 		}
 	}
 
@@ -124,5 +133,27 @@ class FacturasController extends Controller
 	public function getCatalogoProductos()
 	{
 		return $this->facturama->get('catalogs/ProductsOrServices', ['keyword' => 'arrendamiento'] );
+	}
+
+	public function getMetodoDePago($cliente)
+	{
+		$metodo;
+		if ($cliente->membresia->pago->payment_method == 'debit') {
+			$metodo = '28';
+		}else{
+			$metodo = '03';
+		}
+		return $metodo;
+	}
+
+	public function getTipoMembresia($cliente)
+	{
+		$desc;
+		if ($cliente->membresia->tipo == 1) {
+			$desc = 'Estandard';
+		}else{
+			$desc = 'Gold';
+		}
+		return $desc;
 	}
 }
